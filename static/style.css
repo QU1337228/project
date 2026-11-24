@@ -1,0 +1,117 @@
+* { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #e5bd4e;
+            color: #1e1e1e;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .header {
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 28px;
+        }
+
+        .logo {
+            position: absolute;
+            left: 28px;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 0.2px;
+        }
+
+        .nav {
+            display: flex;
+            gap: 140px;
+            font-size: 18px;
+        }
+
+        .nav a {
+            color: #1e1e1e;
+            text-decoration: none;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+
+        .auth {
+            position: absolute;
+            right: 28px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .auth a {
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 4px;
+        }
+
+        .auth .login {
+            color: #1e1e1e;
+            border: 1px solid #1e1e1e;
+        }
+
+        .auth .register {
+            background: #1e1e1e;
+            color: #e5bd4e;
+        }
+
+        .hero {
+            height: 80px;
+            margin: 0 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(90deg, #332705 0%, #4a3709 50%, #332705 100%);
+            color: #e5bd4e;
+            font-size: 20px;
+            letter-spacing: 0.3px;
+        }
+
+        .search {
+            width: 360px;
+            height: 34px;
+            margin: 40px auto 0;
+            display: flex;
+            background: #9c6025;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .search input {
+            flex: 1;
+            border: 0;
+            outline: 0;
+            padding: 0 14px;
+            background: transparent;
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .search input::placeholder { color: rgba(255, 255, 255, 0.75); }
+
+        .search button {
+            border: 0;
+            border-left: 1px solid rgba(0, 0, 0, 0.18);
+            padding: 0 18px;
+            background: #8a5320;
+            color: #fff;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .empty {
+            margin-top: 100px;
+            text-align: center;
+            font-size: 16px;
+            color: #1e1e1e;
+        }

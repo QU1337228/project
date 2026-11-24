@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>skins — главная</title>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">skins</div>
+        <nav class="nav">
+            <a href="#">Главная</a>
+            <a href="#">каталог</a>
+            <a href="#">продать</a>
+        </nav>
+
+        <div class="auth">
+            <a class="login" href="#">Войти</a>
+            <a class="register" href="#">Регистрация</a>
+        </div>
+    </header>
+
+    <section class="hero">Лучшие скины по выгодным ценам</section>
+
+    <form class="search" onsubmit="return false">
+        <input type="text" placeholder="поиск по названию">
+        <button type="submit">поиск</button>
+    </form>
+
+    <div class="empty">Тут пока нет предложений</div>
+</body>
+</html>
