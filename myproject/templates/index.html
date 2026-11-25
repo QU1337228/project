@@ -2,33 +2,245 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>skins — главная</title>
-    <link rel="stylesheet" href="{% static 'style.css' %}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'style.css' %}" />
+  <script src="{% static 'auth.js' %}" defer></script>
+  <title>skins</title>
 </head>
 <body>
-    <header class="header">
-        <div class="logo">skins</div>
-        <nav class="nav">
-            <a href="#">Главная</a>
-            <a href="#">каталог</a>
-            <a href="#">продать</a>
-        </nav>
+  <form id="csrfForm" style="display:none">{% csrf_token %}</form>
 
-        <div class="auth">
-            <a class="login" href="#">Войти</a>
-            <a class="register" href="#">Регистрация</a>
+  <header class="header">
+    <a class="logo" href="#">skins</a>
+    <nav class="nav">
+      <a href="#">Главная</a>
+      <a href="#">Избранное</a>
+      <a href="#">продать</a>
+    </nav>
+    {% if user.is_authenticated %}
+      <div class="user-menu">
+        <span class="avatar">{{ user.username|first|upper }}</span>
+        <span class="user-name">{{ user.username }}</span>
+        <button class="user-action" id="profileBtn" type="button">Профиль</button>
+        <button class="user-action" id="logoutBtn" type="button">Выйти</button>
+      </div>
+    {% else %}
+      <button class="login" id="openAuth" type="button">Вход</button>
+    {% endif %}
+  </header>
+
+  <section class="hero">
+    <h1>лучшие скины по выгодным предложениям</h1>
+  </section>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="search-row">
+        <input type="text" placeholder="" aria-label="поиск" />
+        <button type="button">поиск</button>
+      </div>
+
+      <h2 class="filters-title">фильтры</h2>
+
+      <details class="filter-block">
+        <summary>редкость</summary>
+        <div class="options">
+          <label><input type="checkbox" /> Common</label>
+          <label><input type="checkbox" /> Uncommon</label>
+          <label><input type="checkbox" /> Rare</label>
+          <label><input type="checkbox" /> Mythical</label>
+          <label><input type="checkbox" /> Legendary</label>
+          <label><input type="checkbox" /> Immortal</label>
+          <label><input type="checkbox" /> Arcana</label>
+          <label><input type="checkbox" /> Ancient</label>
         </div>
-    </header>
+      </details>
 
-    <section class="hero">Лучшие скины по выгодным ценам</section>
+      <details class="filter-block">
+        <summary>герой</summary>
+        <div class="options">
+          <label><input type="checkbox" /> Abaddon</label>
+          <label><input type="checkbox" /> Alchemist</label>
+          <label><input type="checkbox" /> Ancient Apparition</label>
+          <label><input type="checkbox" /> Anti-Mage</label>
+          <label><input type="checkbox" /> Arc Warden</label>
+          <label><input type="checkbox" /> Axe</label>
+          <label><input type="checkbox" /> Bane</label>
+          <label><input type="checkbox" /> Batrider</label>
+          <label><input type="checkbox" /> Beastmaster</label>
+          <label><input type="checkbox" /> Bloodseeker</label>
+          <label><input type="checkbox" /> Bounty Hunter</label>
+          <label><input type="checkbox" /> Brewmaster</label>
+          <label><input type="checkbox" /> Bristleback</label>
+          <label><input type="checkbox" /> Broodmother</label>
+          <label><input type="checkbox" /> Centaur Warrunner</label>
+          <label><input type="checkbox" /> Chaos Knight</label>
+          <label><input type="checkbox" /> Chen</label>
+          <label><input type="checkbox" /> Clinkz</label>
+          <label><input type="checkbox" /> Clockwerk</label>
+          <label><input type="checkbox" /> Crystal Maiden</label>
+          <label><input type="checkbox" /> Dark Seer</label>
+          <label><input type="checkbox" /> Dark Willow</label>
+          <label><input type="checkbox" /> Dawnbreaker</label>
+          <label><input type="checkbox" /> Dazzle</label>
+          <label><input type="checkbox" /> Death Prophet</label>
+          <label><input type="checkbox" /> Disruptor</label>
+          <label><input type="checkbox" /> Doom</label>
+          <label><input type="checkbox" /> Dragon Knight</label>
+          <label><input type="checkbox" /> Drow Ranger</label>
+          <label><input type="checkbox" /> Earth Spirit</label>
+          <label><input type="checkbox" /> Earthshaker</label>
+          <label><input type="checkbox" /> Elder Titan</label>
+          <label><input type="checkbox" /> Ember Spirit</label>
+          <label><input type="checkbox" /> Enchantress</label>
+          <label><input type="checkbox" /> Enigma</label>
+          <label><input type="checkbox" /> Faceless Void</label>
+          <label><input type="checkbox" /> Grimstroke</label>
+          <label><input type="checkbox" /> Gyrocopter</label>
+          <label><input type="checkbox" /> Hoodwink</label>
+          <label><input type="checkbox" /> Huskar</label>
+          <label><input type="checkbox" /> Invoker</label>
+          <label><input type="checkbox" /> Io</label>
+          <label><input type="checkbox" /> Jakiro</label>
+          <label><input type="checkbox" /> Juggernaut</label>
+          <label><input type="checkbox" /> Keeper of the Light</label>
+          <label><input type="checkbox" /> Kez</label>
+          <label><input type="checkbox" /> Kunkka</label>
+          <label><input type="checkbox" /> Largo</label>
+          <label><input type="checkbox" /> Legion Commander</label>
+          <label><input type="checkbox" /> Leshrac</label>
+          <label><input type="checkbox" /> Lich</label>
+          <label><input type="checkbox" /> Lifestealer</label>
+          <label><input type="checkbox" /> Lina</label>
+          <label><input type="checkbox" /> Lion</label>
+          <label><input type="checkbox" /> Lone Druid</label>
+          <label><input type="checkbox" /> Luna</label>
+          <label><input type="checkbox" /> Lycan</label>
+          <label><input type="checkbox" /> Magnus</label>
+          <label><input type="checkbox" /> Marci</label>
+          <label><input type="checkbox" /> Mars</label>
+          <label><input type="checkbox" /> Medusa</label>
+          <label><input type="checkbox" /> Meepo</label>
+          <label><input type="checkbox" /> Mirana</label>
+          <label><input type="checkbox" /> Monkey King</label>
+          <label><input type="checkbox" /> Morphling</label>
+          <label><input type="checkbox" /> Muerta</label>
+          <label><input type="checkbox" /> Naga Siren</label>
+          <label><input type="checkbox" /> Nature's Prophet</label>
+          <label><input type="checkbox" /> Necrophos</label>
+          <label><input type="checkbox" /> Night Stalker</label>
+          <label><input type="checkbox" /> Nyx Assassin</label>
+          <label><input type="checkbox" /> Ogre Magi</label>
+          <label><input type="checkbox" /> Omniknight</label>
+          <label><input type="checkbox" /> Oracle</label>
+          <label><input type="checkbox" /> Outworld Destroyer</label>
+          <label><input type="checkbox" /> Pangolier</label>
+          <label><input type="checkbox" /> Phantom Assassin</label>
+          <label><input type="checkbox" /> Phantom Lancer</label>
+          <label><input type="checkbox" /> Phoenix</label>
+          <label><input type="checkbox" /> Primal Beast</label>
+          <label><input type="checkbox" /> Puck</label>
+          <label><input type="checkbox" /> Pudge</label>
+          <label><input type="checkbox" /> Pugna</label>
+          <label><input type="checkbox" /> Queen of Pain</label>
+          <label><input type="checkbox" /> Razor</label>
+          <label><input type="checkbox" /> Riki</label>
+          <label><input type="checkbox" /> Ringmaster</label>
+          <label><input type="checkbox" /> Rubick</label>
+          <label><input type="checkbox" /> Sand King</label>
+          <label><input type="checkbox" /> Shadow Demon</label>
+          <label><input type="checkbox" /> Shadow Fiend</label>
+          <label><input type="checkbox" /> Shadow Shaman</label>
+          <label><input type="checkbox" /> Silencer</label>
+          <label><input type="checkbox" /> Skywrath Mage</label>
+          <label><input type="checkbox" /> Slardar</label>
+          <label><input type="checkbox" /> Slark</label>
+          <label><input type="checkbox" /> Snapfire</label>
+          <label><input type="checkbox" /> Sniper</label>
+          <label><input type="checkbox" /> Spectre</label>
+          <label><input type="checkbox" /> Spirit Breaker</label>
+          <label><input type="checkbox" /> Storm Spirit</label>
+          <label><input type="checkbox" /> Sven</label>
+          <label><input type="checkbox" /> Techies</label>
+          <label><input type="checkbox" /> Templar Assassin</label>
+          <label><input type="checkbox" /> Terrorblade</label>
+          <label><input type="checkbox" /> Tidehunter</label>
+          <label><input type="checkbox" /> Timbersaw</label>
+          <label><input type="checkbox" /> Tinker</label>
+          <label><input type="checkbox" /> Tiny</label>
+          <label><input type="checkbox" /> Treant Protector</label>
+          <label><input type="checkbox" /> Troll Warlord</label>
+          <label><input type="checkbox" /> Tusk</label>
+          <label><input type="checkbox" /> Underlord</label>
+          <label><input type="checkbox" /> Undying</label>
+          <label><input type="checkbox" /> Ursa</label>
+          <label><input type="checkbox" /> Vengeful Spirit</label>
+          <label><input type="checkbox" /> Venomancer</label>
+          <label><input type="checkbox" /> Viper</label>
+          <label><input type="checkbox" /> Visage</label>
+          <label><input type="checkbox" /> Void Spirit</label>
+          <label><input type="checkbox" /> Warlock</label>
+          <label><input type="checkbox" /> Weaver</label>
+          <label><input type="checkbox" /> Windranger</label>
+          <label><input type="checkbox" /> Winter Wyvern</label>
+          <label><input type="checkbox" /> Witch Doctor</label>
+          <label><input type="checkbox" /> Wraith King</label>
+          <label><input type="checkbox" /> Zeus</label>
+        </div>
+      </details>
 
-    <form class="search" onsubmit="return false">
-        <input type="text" placeholder="поиск по названию">
-        <button type="submit">поиск</button>
-    </form>
+      <details class="filter-block">
+        <summary>тип</summary>
+        <div class="options">
+          <label><input type="checkbox" /> все</label>
+          <label><input type="checkbox" /> одежда</label>
+          <label><input type="checkbox" /> курьеры</label>
+          <label><input type="checkbox" /> варды</label>
+          <label><input type="checkbox" /> ключи</label>
+          <label><input type="checkbox" /> руны</label>
+          <label><input type="checkbox" /> интерфейс</label>
+          <label><input type="checkbox" /> комментаторы</label>
+          <label><input type="checkbox" /> другое</label>
+        </div>
+      </details>
+    </aside>
 
-    <div class="empty">Тут пока нет предложений</div>
+    <section class="content">
+      <p class="empty">тут пока нет предложений</p>
+    </section>
+  </main>
+
+  <div class="modal-overlay" id="authModal" hidden>
+    <div class="modal">
+      <button class="modal-close" id="closeAuth" type="button">×</button>
+
+      <div class="modal-view" id="loginView">
+        <h2>Вход</h2>
+        <input id="loginIdentity" type="text" placeholder="Email или логин" />
+        <input id="loginPassword" type="password" placeholder="Пароль" />
+        <button class="primary" id="loginSubmit" type="button">Вход</button>
+        <div class="modal-links">
+          <a href="#" id="forgotPassword">забыл пароль</a>
+          <a href="#" id="toRegister">нет аккаунта</a>
+        </div>
+      </div>
+
+      <div class="modal-view" id="registerView" hidden>
+        <h2>Регистрация</h2>
+        <input id="regEmail" type="email" placeholder="Email" />
+        <input id="regLogin" type="text" placeholder="логин" />
+        <input id="regPassword" type="password" placeholder="Пароль" />
+        <input id="regConfirm" type="password" placeholder="Подтверждение" />
+        <button class="primary" id="registerSubmit" type="button">Регистрация</button>
+        <div class="modal-links">
+          <a href="#" id="toLogin">Есть акк</a>
+        </div>
+      </div>
+
+      <p class="modal-error" id="authError"></p>
+    </div>
+  </div>
+
 </body>
 </html>
