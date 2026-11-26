@@ -20,9 +20,15 @@
     </nav>
     {% if user.is_authenticated %}
       <div class="user-menu">
-        <span class="avatar">{{ user.username|first|upper }}</span>
+        <span class="avatar-wrap" id="headerAvatar">
+          {% if profile and profile.avatar %}
+            <img class="avatar avatar-img" src="{{ profile.avatar.url }}" alt="аватар" />
+          {% else %}
+            <span class="avatar">{{ user.username|first|upper }}</span>
+          {% endif %}
+        </span>
         <span class="user-name">{{ user.username }}</span>
-        <button class="user-action" id="profileBtn" type="button">Профиль</button>
+        <a class="user-action" href="/profile/">Профиль</a>
         <button class="user-action" id="logoutBtn" type="button">Выйти</button>
       </div>
     {% else %}

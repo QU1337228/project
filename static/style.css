@@ -350,3 +350,136 @@ body {
   font-size: 14px;
   text-align: center;
 }
+
+.modal-error.success { color: #0b5b21; }
+
+.avatar-wrap { display: inline-flex; align-items: center; }
+.avatar-img { object-fit: cover; }
+
+.profile-body { background: #eab84c; color: #000; }
+
+.profile-page {
+  max-width: 900px;
+  margin: 28px auto;
+  padding: 0 20px;
+}
+
+.profile-title {
+  margin: 0 0 20px;
+  font-size: 28px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.profile-block {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 16px;
+  padding: 18px 20px;
+  border: 2px solid #4a3d2b;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.14);
+  color: #000;
+}
+
+.profile-info {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex: 1;
+}
+
+.profile-info h2 {
+  margin: 0;
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.profile-current {
+  margin: 6px 0 0;
+  font-size: 14px;
+}
+
+.profile-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.profile-button {
+  display: inline-block;
+  padding: 8px 16px;
+  border: 1px solid #4a3d2b;
+  border-radius: 3px;
+  background: #b88c2e;
+  color: #000;
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.profile-button:hover { background: #c99a3e; }
+
+.profile-button-light { background: #e0c070; }
+
+.profile-button-light:hover { background: #ead19a; }
+
+.profile-edit {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+  margin-top: 6px;
+}
+
+.profile-edit[hidden] { display: none !important; }
+
+.profile-edit input {
+  flex: 1 1 220px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid #4a3d2b;
+  border-radius: 4px;
+  background: #f3e2b5;
+  color: #000;
+  font-size: 15px;
+  outline: none;
+}
+
+.profile-message {
+  flex-basis: 100%;
+  min-height: 16px;
+  margin: 4px 0 0;
+  color: #8b0000;
+  font-size: 13px;
+}
+
+.profile-message.success { color: #0b5b21; }
+
+.avatar-large {
+  width: 64px;
+  height: 64px;
+  flex: none;
+  font-size: 28px;
+}
+
+.profile-avatar-img {
+  width: 64px;
+  height: 64px;
+  border: 2px solid #4a3d2b;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+@media (max-width: 760px) {
+  .profile-page { padding: 0 12px; }
+  .profile-block { padding: 14px; }
+  .profile-actions { margin-left: 0; }
+  .profile-info { flex-basis: 100%; }
+}

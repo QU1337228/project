@@ -7,10 +7,15 @@
   const errorBox = document.getElementById('authError');
   const csrfInput = document.querySelector('#csrfForm [name=csrfmiddlewaretoken]');
 
+  function setMessage(text, success) {
+    errorBox.textContent = text;
+    errorBox.classList.toggle('success', Boolean(success));
+  }
+
   function show(view) {
     loginView.hidden = view !== 'login';
     registerView.hidden = view !== 'register';
-    errorBox.textContent = '';
+    setMessage('', false);
   }
 
   function open(view) {
@@ -20,7 +25,7 @@
 
   function close() {
     modal.hidden = true;
-    errorBox.textContent = '';
+    setMessage('', false);
   }
 
   if (openButton) openButton.addEventListener('click', () => open('login'));
@@ -51,12 +56,12 @@
   if (forgot) {
     forgot.addEventListener('click', (event) => {
       event.preventDefault();
-      errorBox.textContent = 'Восстановление пароля пока не реализовано';
+      setMessage('Восстановление пароля пока не реализовано', false);
     });
   }
 
-  async function submit(url, payload) {
-    errorBox.textContent = '';
+  async function submit(url, payload, onSuccess) {
+    setMessage('', false);
     try {
       const response = await fetch(url, {
         method: 'POST',
@@ -68,12 +73,16 @@
       });
       const result = await response.json();
       if (!response.ok || !result.ok) {
-        errorBox.textContent = result.error || 'Ошибка';
+        setMessage(result.error || 'Ошибка', false);
         return;
       }
-      window.location.reload();
+      if (onSuccess) {
+        onSuccess(result);
+      } else {
+        window.location.reload();
+      }
     } catch (error) {
-      errorBox.textContent = 'Не удалось связаться с сервером';
+      setMessage('Не удалось связаться с сервером', false);
     }
   }
 
