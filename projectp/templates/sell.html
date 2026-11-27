@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'style.css' %}?v=4" />
+  <script src="{% static 'header.js' %}?v=4" defer></script>
+  <script src="{% static 'sell.js' %}" defer></script>
+  <title>Выставить товар</title>
+</head>
+<body class="sell-body">
+  <form id="csrfForm" style="display:none">{% csrf_token %}</form>
+
+  {% include 'header.html' %}
+
+  <main class="sell-page">
+    <form class="sell-search" method="get" action="/">
+      <input type="text" name="q" value="{{ query }}" placeholder="ПОИСК ПО НАЗВАНИЮ" />
+      <button type="submit">ПОИСК</button>
+    </form>
+
+    {% if error %}
+      <p class="sell-error">{{ error }}</p>
+    {% endif %}
+
+    <form class="sell-form" method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+
+      <div class="sell-left">
+        <label class="image-drop" id="imageDrop">
+          <input type="file" name="image" id="imageInput" accept="image/*" required hidden />
+          <span id="imagePlaceholder">Добавить картинку товара</span>
+        </label>
+      </div>
+
+      <div class="sell-center">
+        <input class="sell-title-input" type="text" name="name" value="{{ form.name|default:'' }}" placeholder="ДОБАВИТЬ НАЗВАНИЕ" required />
+        <p class="sell-label">описание:</p>
+        <textarea name="description" placeholder="добавить описание" required>{{ form.description|default:'' }}</textarea>
+      </div>
+
+      <div class="sell-right">
+        <button class="sell-action" type="submit">ВЫСТАВИТЬ</button>
+        <select name="hero" id="heroSelect" required>
+          <option value="">ВЫБЕРИТЕ ГЕРОЯ</option>
+          {% for hero in heroes %}
+            <option value="{{ hero }}" {% if form.hero == hero %}selected{% endif %}>{{ hero }}</option>
+          {% endfor %}
+        </select>
+        <select name="rarity" required>
+          <option value="">УКАЖИТЕ РЕДКОСТЬ</option>
+          {% for rarity in rarities %}
+            <option value="{{ rarity }}" {% if form.rarity == rarity %}selected{% endif %}>{{ rarity }}</option>
+          {% endfor %}
+        </select>
+        <select name="item_type" id="typeSelect" required>
+          <option value="">ТИП ТОВАРА</option>
+          {% for item_type in item_types %}
+            <option value="{{ item_type }}"
+                    data-hero-allowed="{% if item_type in non_hero_types %}false{% else %}true{% endif %}"
+                    {% if form.item_type == item_type %}selected{% endif %}>{{ item_type }}</option>
+          {% endfor %}
+        </select>
+        <p class="sell-hint" id="heroHint" hidden>Для этого типа герой не выбирается</p>
+      </div>
+    </form>
+  </main>
+</body>
+</html>

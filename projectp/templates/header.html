@@ -1,0 +1,28 @@
+<header class="header">
+  <a class="logo" href="/">skins</a>
+  <nav class="nav">
+    <a href="/">Главная</a>
+    <a href="#">Избранное</a>
+    <a href="/sell/">продать</a>
+  </nav>
+  {% if user.is_authenticated %}
+    <div class="user-area">
+      <button class="user-trigger" id="userTrigger" type="button" aria-expanded="false">
+        {% if profile and profile.avatar %}
+          <img class="avatar avatar-img" src="{{ profile.avatar.url }}" alt="аватар" />
+        {% else %}
+          <span class="avatar">{{ user.username|first|upper }}</span>
+        {% endif %}
+        <span class="user-name">{{ user.username }}</span>
+        <span class="user-caret">▾</span>
+      </button>
+      <div class="user-dropdown" id="userDropdown" hidden>
+        <a href="/profile/">Профиль</a>
+        <a href="/cart/"><span class="cart-icon">🛒</span> Корзина <span class="cart-count" id="cartCount">{{ cart_count }}</span></a>
+        <button id="logoutBtn" type="button">Выйти</button>
+      </div>
+    </div>
+  {% else %}
+    <button class="login" id="openAuth" type="button">Вход</button>
+  {% endif %}
+</header>

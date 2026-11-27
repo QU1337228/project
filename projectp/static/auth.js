@@ -2,6 +2,7 @@
   const modal = document.getElementById('authModal');
   const loginView = document.getElementById('loginView');
   const registerView = document.getElementById('registerView');
+  const forgotView = document.getElementById('forgotView');
   const openButton = document.getElementById('openAuth');
   const closeButton = document.getElementById('closeAuth');
   const errorBox = document.getElementById('authError');
@@ -15,6 +16,7 @@
   function show(view) {
     loginView.hidden = view !== 'login';
     registerView.hidden = view !== 'register';
+    forgotView.hidden = view !== 'forgot';
     setMessage('', false);
   }
 
@@ -56,7 +58,15 @@
   if (forgot) {
     forgot.addEventListener('click', (event) => {
       event.preventDefault();
-      setMessage('Восстановление пароля пока не реализовано', false);
+      show('forgot');
+    });
+  }
+
+  const forgotToLogin = document.getElementById('forgotToLogin');
+  if (forgotToLogin) {
+    forgotToLogin.addEventListener('click', (event) => {
+      event.preventDefault();
+      show('login');
     });
   }
 
@@ -104,19 +114,16 @@
     }));
   }
 
-  const logoutButton = document.getElementById('logoutBtn');
-  if (logoutButton) {
-    logoutButton.addEventListener('click', async () => {
-      try {
-        const response = await fetch('/logout/', {
-          method: 'POST',
-          headers: { 'X-CSRFToken': csrfInput ? csrfInput.value : '' }
-        });
-        if (response.ok) window.location.reload();
-      } catch (error) {
-        window.location.reload();
-      }
-    });
+  const forgotSubmit = document.getElementById('forgotSubmit');
+  if (forgotSubmit) {
+    forgotSubmit.addEventListener('click', () => submit('/reset-password/', {
+      identity: document.getElementById('forgotIdentity').value,
+      password: document.getElementById('forgotNewPassword').value,
+      confirm: document.getElementById('forgotConfirm').value
+    }, () => {
+      show('login');
+      setMessage('Пароль изменён. Войдите с новым паролем', true);
+    }));
   }
 
   document.addEventListener('keydown', (event) => {

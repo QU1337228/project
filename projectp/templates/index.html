@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'style.css' %}?v=4" />
+  <script src="{% static 'header.js' %}?v=4" defer></script>
+  <script src="{% static 'auth.js' %}?v=5" defer></script>
+  <script src="{% static 'main.js' %}?v=4" defer></script>
+  <title>skins</title>
+</head>
+<body>
+  <form id="csrfForm" style="display:none">{% csrf_token %}</form>
+
+  {% include 'header.html' %}
+
+  <section class="hero">
+    <h1>лучшие скины по выгодным предложениям</h1>
+  </section>
+
+  <main class="layout">
+    <aside class="sidebar">
+      <div class="search-row">
+        <input id="productSearch" type="text" value="{{ query }}" placeholder="поиск по названию" aria-label="поиск" />
+        <button id="searchBtn" type="button">поиск</button>
+      </div>
+
+      <h2 class="filters-title">фильтры</h2>
+
+      <details class="filter-block">
+        <summary>редкость</summary>
+        <div class="options">
+          {% for rarity in rarities %}
+            <label><input class="filter-checkbox" type="checkbox" data-filter="rarity" data-value="{{ rarity|lower }}" /> {{ rarity }}</label>
+          {% endfor %}
+        </div>
+      </details>
+
+      <details class="filter-block">
+        <summary>герой</summary>
+        <div class="options">
+          {% for hero in heroes %}
+            <label><input class="filter-checkbox" type="checkbox" data-filter="hero" data-value="{{ hero|lower }}" /> {{ hero }}</label>
+          {% endfor %}
+        </div>
+      </details>
+
+      <details class="filter-block">
+        <summary>тип</summary>
+        <div class="options">
+          {% for item_type in item_types %}
+            <label><input class="filter-checkbox" type="checkbox" data-filter="type" data-value="{{ item_type|lower }}" /> {{ item_type }}</label>
+          {% endfor %}
+        </div>
+      </details>
+    </aside>
+
+    <section class="content">
+      {% for product in products %}
+        <article class="product-card"
+                 tabindex="0"
+                 data-name="{{ product.name|lower }}"
+                 data-description="{{ product.description|lower }}"
+                 data-hero="{{ product.hero|lower }}"
+                 data-rarity="{{ product.rarity|lower }}"
+                 data-type="{{ product.item_type|lower }}"
+                 data-image="{{ product.image.url }}"
+                 data-name-label="{{ product.name }}"
+                 data-description-label="{{ product.description }}"
+                 data-hero-label="{{ product.hero }}"
+                 data-type-label="{{ product.item_type }}"
+                 data-rarity-label="{{ product.rarity }}">
+          <img class="product-image" src="{{ product.image.url }}" alt="{{ product.name }}" />
+          <div class="product-body">
+            <h3 class="product-name">{{ product.name }}</h3>
+            <div class="product-badges">
+              <span class="product-badge">{{ product.rarity }}</span>
+              <span class="product-badge">{% if product.hero %}{{ product.hero }}{% else %}{{ product.item_type }}{% endif %}</span>
+            </div>
+            <button class="buy-button"
+                    type="button"
+                    data-product-id="{{ product.id }}"
+                    data-in-cart="{% if product.id in cart_ids %}true{% else %}false{% endif %}">
+              {% if product.id in cart_ids %}В корзине{% else %}Купить{% endif %}
+            </button>
+          </div>
+        </article>
+      {% empty %}
+        <p class="empty" id="emptyMessage">тут пока нет предложений</p>
+      {% endfor %}
+      <p class="empty" id="emptyFiltered" hidden>ничего не найдено</p>
+    </section>
+  </main>
+
+  <div class="modal-overlay product-overlay" id="productModal" hidden>
+    <div class="product-modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="closeProduct" type="button">×</button>
+      <div class="product-modal-body">
+        <img class="product-modal-image" id="productModalImage" src="" alt="" />
+        <div class="product-modal-info">
+          <h2 id="productModalName"></h2>
+          <div class="product-modal-badges" id="productModalBadges"></div>
+          <p class="product-modal-label">описание:</p>
+          <p class="product-modal-description" id="productModalDescription"></p>
+          <div class="product-modal-actions">
+            <button class="buy-button product-modal-buy" id="productModalBuy" type="button">КУПИТЬ</button>
+            <label class="favorite-label">
+              <input type="checkbox" id="productModalFavorite" />
+              пометить в избранное
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="authModal" hidden>
+    <div class="modal">
+      <button class="modal-close" id="closeAuth" type="button">×</button>
+
+      <div class="modal-view" id="loginView">
+        <h2>Вход</h2>
+        <input id="loginIdentity" type="text" placeholder="Email или логин" />
+        <input id="loginPassword" type="password" placeholder="Пароль" />
+        <button class="primary" id="loginSubmit" type="button">Вход</button>
+        <div class="modal-links">
+          <a href="#" id="forgotPassword">забыл пароль</a>
+          <a href="#" id="toRegister">нет аккаунта</a>
+        </div>
+      </div>
+
+      <div class="modal-view" id="registerView" hidden>
+        <h2>Регистрация</h2>
+        <input id="regEmail" type="email" placeholder="Email" />
+        <input id="regLogin" type="text" placeholder="логин" />
+        <input id="regPassword" type="password" placeholder="Пароль" />
+        <input id="regConfirm" type="password" placeholder="Подтверждение" />
+        <button class="primary" id="registerSubmit" type="button">Регистрация</button>
+        <div class="modal-links">
+          <a href="#" id="toLogin">Есть акк</a>
+        </div>
+      </div>
+
+      <div class="modal-view" id="forgotView" hidden>
+        <h2>Восстановление пароля</h2>
+        <input id="forgotIdentity" type="text" placeholder="Логин или email" />
+        <input id="forgotNewPassword" type="password" placeholder="Новый пароль" />
+        <input id="forgotConfirm" type="password" placeholder="Подтверждение" />
+        <button class="primary" id="forgotSubmit" type="button">Сменить пароль</button>
+        <div class="modal-links">
+          <a href="#" id="forgotToLogin">Вернуться к входу</a>
+        </div>
+      </div>
+
+      <p class="modal-error" id="authError"></p>
+    </div>
+  </div>
+
+</body>
+</html>

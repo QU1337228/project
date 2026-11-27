@@ -4,34 +4,15 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="{% static 'style.css' %}" />
-  <script src="{% static 'auth.js' %}" defer></script>
+  <link rel="stylesheet" href="{% static 'style.css' %}?v=4" />
+  <script src="{% static 'header.js' %}?v=4" defer></script>
   <script src="{% static 'profile.js' %}" defer></script>
   <title>Профиль</title>
 </head>
 <body class="profile-body">
   <form id="csrfForm" style="display:none">{% csrf_token %}</form>
 
-  <header class="header">
-    <a class="logo" href="/">skins</a>
-    <nav class="nav">
-      <a href="/">Главная</a>
-      <a href="/">Избранное</a>
-      <a href="/">продать</a>
-    </nav>
-    <div class="user-menu">
-      <span class="avatar-wrap" id="headerAvatar">
-        {% if profile and profile.avatar %}
-          <img class="avatar avatar-img" src="{{ profile.avatar.url }}" alt="аватар" />
-        {% else %}
-          <span class="avatar">{{ user.username|first|upper }}</span>
-        {% endif %}
-      </span>
-      <span class="user-name">{{ user.username }}</span>
-      <a class="user-action" href="/profile/">Профиль</a>
-      <button class="user-action" id="logoutBtn" type="button">Выйти</button>
-    </div>
-  </header>
+  {% include 'header.html' %}
 
   <main class="profile-page">
     <h1 class="profile-title">Профиль</h1>

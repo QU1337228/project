@@ -2,7 +2,9 @@ from .models import Profile
 
 
 def profile(request):
+    cart = request.session.get('cart', [])
+    context = {'profile': None, 'cart_count': len(cart)}
     if request.user.is_authenticated:
         user_profile, _ = Profile.objects.get_or_create(user=request.user)
-        return {'profile': user_profile}
-    return {'profile': None}
+        context['profile'] = user_profile
+    return context

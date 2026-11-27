@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="{% static 'style.css' %}?v=4" />
+  <script src="{% static 'header.js' %}?v=4" defer></script>
+  <script src="{% static 'cart.js' %}" defer></script>
+  <title>Корзина</title>
+</head>
+<body class="cart-body">
+  <form id="csrfForm" style="display:none">{% csrf_token %}</form>
+
+  {% include 'header.html' %}
+
+  <main class="cart-page">
+    <h1 class="cart-title">Корзина</h1>
+
+    {% for product in products %}
+      <article class="cart-item">
+        <img class="cart-image" src="{{ product.image.url }}" alt="{{ product.name }}" />
+        <div class="cart-info">
+          <h3>{{ product.name }}</h3>
+          <p>
+            {% if product.hero %}герой: {{ product.hero }}{% else %}{{ product.item_type }}{% endif %}
+            · {{ product.rarity }}
+          </p>
+        </div>
+        <button class="remove-button" type="button" data-product-id="{{ product.id }}">Убрать</button>
+      </article>
+    {% empty %}
+      <p class="empty">корзина пуста</p>
+    {% endfor %}
+  </main>
+</body>
+</html>
